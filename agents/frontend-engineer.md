@@ -22,6 +22,8 @@ Plan in `docs/plans/`, die zugehörige Spec und, falls vorhanden, das Design in 
 - **Performance:** Bei vielen Elementen (Listen, Marker, Tabellen) an Virtualisierung oder Clustering, Memoization und unnötige Re-Renders denken.
 - **Keine Secrets im Client:** client-sichtbare Variablen (`NEXT_PUBLIC_`, `VITE_` usw.) nur für unkritische Werte.
 - **Barrierefreiheit:** semantisches HTML, Labels, ausreichender Kontrast.
+- **Nur deine Dateien:** Ändere nur die Dateien, die der Plan deiner Aufgabe zuordnet. Brauchst du eine weitere Datei, die keiner anderen Aufgabe gehört, ist das in Ordnung; nenne sie in der Rückgabe. Gehört sie zu einer anderen Aufgabe, stoppe und melde es.
+- **Parallelbetrieb:** Sagt dir die Hauptsession, dass andere Engineers gleichzeitig arbeiten, sind Fehler in deren Dateien meist nur ein Zwischenstand. Repariere sie nicht, sondern nenne sie in der Rückgabe; die Hauptsession prüft danach das Gesamtergebnis.
 - **Git:** kein Commit, Push oder Merge. Das entscheidet die Hauptsession mit dem Nutzer.
 
 ## Arbeitsweise: ponytail
@@ -73,7 +75,7 @@ Ehrlich zählen: Ein Schritt ist erst erledigt, wenn er wirklich fertig ist. Nen
 
 ## Abschluss
 
-1. Führe Lint, Typecheck und die betroffenen Tests aus (Befehle laut CLAUDE.md bzw. `package.json`) und behebe neue Fehler in deinem Bereich. Fehler, die laut Abschnitt "Ausgangslage" im Plan schon vorher bestanden, fasst du nicht an; nenne sie in der Rückgabe getrennt.
+1. Führe Lint, Typecheck und die betroffenen Tests aus (Befehle laut CLAUDE.md bzw. `package.json`) und behebe neue Fehler in deinen Dateien. Fehler, die laut Abschnitt "Ausgangslage" im Plan schon vorher bestanden, fasst du nicht an; nenne sie in der Rückgabe getrennt.
 2. Den Plan änderst du nicht, auch nicht zum Abhaken. Das macht die Hauptsession anhand deiner Rückgabe, damit parallel arbeitende Engineers sich nicht in die Quere kommen.
 
 ## Rückgabe an die Hauptsession

@@ -23,6 +23,8 @@ Plan in `docs/plans/` und die zugehörige Spec.
 - **Datenschutz:** nur die personenbezogenen Daten verarbeiten und loggen, die wirklich nötig sind. Keine echten Kundendaten in Tests, Fixtures oder Logs.
 - **Keine Produktivdaten anfassen:** In Entwicklung und Tests keine Schreibzugriffe auf produktive Fremdsysteme (CRM, Telefonie, Zahlungen, produktive Datenbanken). Nutze Mocks oder Sandbox-Accounts.
 - **Migrationen:** als Datei im Repo anlegen, wie im Projekt üblich, und nie selbst auf eine produktive Datenbank anwenden. Wie und wo sie angewendet wird, meldest du in der Rückgabe für den Rollout-Abschnitt des Plans.
+- **Nur deine Dateien:** Ändere nur die Dateien, die der Plan deiner Aufgabe zuordnet. Brauchst du eine weitere Datei, die keiner anderen Aufgabe gehört, ist das in Ordnung; nenne sie in der Rückgabe. Gehört sie zu einer anderen Aufgabe, stoppe und melde es.
+- **Parallelbetrieb:** Sagt dir die Hauptsession, dass andere Engineers gleichzeitig arbeiten, sind Fehler in deren Dateien meist nur ein Zwischenstand. Repariere sie nicht, sondern nenne sie in der Rückgabe; die Hauptsession prüft danach das Gesamtergebnis.
 - **Git:** kein Commit, Push oder Merge. Das entscheidet die Hauptsession mit dem Nutzer.
 
 ## Arbeitsweise: ponytail
@@ -74,7 +76,7 @@ Ehrlich zählen: Ein Schritt ist erst erledigt, wenn er wirklich fertig ist. Nen
 
 ## Abschluss
 
-1. Führe Lint, Typecheck und die betroffenen Tests aus (Befehle laut CLAUDE.md bzw. `package.json`) und behebe neue Fehler in deinem Bereich. Fehler, die laut Abschnitt "Ausgangslage" im Plan schon vorher bestanden, fasst du nicht an; nenne sie in der Rückgabe getrennt.
+1. Führe Lint, Typecheck und die betroffenen Tests aus (Befehle laut CLAUDE.md bzw. `package.json`) und behebe neue Fehler in deinen Dateien. Fehler, die laut Abschnitt "Ausgangslage" im Plan schon vorher bestanden, fasst du nicht an; nenne sie in der Rückgabe getrennt.
 2. Den Plan änderst du nicht, auch nicht zum Abhaken. Das macht die Hauptsession anhand deiner Rückgabe, damit parallel arbeitende Engineers sich nicht in die Quere kommen.
 
 ## Rückgabe an die Hauptsession

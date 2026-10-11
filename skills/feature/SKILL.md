@@ -101,10 +101,11 @@ Delegiere an **tech-lead** mit dem Pfad zur Spec, zur Design-Referenz, dem Zielp
 ## Phase 4: Umsetzung
 
 1. Arbeite die Aufgaben in der Reihenfolge des Plans ab: **backend-engineer** für `[backend]`, **frontend-engineer** für `[frontend]`. Gib jeweils den Pfad zum Plan, die Aufgaben-IDs und die vorbestehenden Fehler aus der Ausgangslage mit. `[qa]`-Aufgaben übernimmt der qa-engineer in Phase 5.
-2. Parallel nur, wenn der Plan es erlaubt: Der API-Vertrag steht, und die Aufgaben fassen keine gemeinsamen Dateien an.
-3. Sammle die Rückgaben. Abweichungen oder Blocker klärst du mit dem Nutzer, bevor es weitergeht.
-4. **Den Plan pflegst du, nicht die Engineers:** Hake nach jeder Rückgabe die erledigten Aufgaben ab und übernimm gemeldete manuelle Go-live-Schritte in den Abschnitt "Rollout". So kommen sich parallel laufende Engineers nicht in derselben Datei in die Quere.
-5. Führe eine Liste aller geänderten und neu angelegten Dateien aus den Rückgaben und gleiche sie mit `git status` ab. Neue Dateien sind bis zum Commit untracked und tauchen in `git diff` nicht auf. QA und Review brauchen diese Liste.
+2. Parallel nur, wenn der Plan es erlaubt: Der API-Vertrag steht, und die Aufgaben fassen keine gemeinsamen Dateien an. Sag parallel laufenden Engineers ausdrücklich, dass andere gleichzeitig im Repo arbeiten und welche Aufgaben das sind.
+3. **Gesamtcheck nach jedem parallelen Block:** Sind alle parallel gestarteten Aufgaben zurück, führe einmal Lint, Typecheck und Tests übers ganze Projekt aus, bevor der nächste Block startet. Erst jetzt ist der Stand vollständig; während die Engineers arbeiten, sehen ihre Checks die halbfertigen Dateien der anderen. Vergleiche mit der Ausgangslage und gib neue Fehler gezielt an den Engineer, dessen Dateien betroffen sind.
+4. Sammle die Rückgaben. Abweichungen oder Blocker klärst du mit dem Nutzer, bevor es weitergeht.
+5. **Den Plan pflegst du, nicht die Engineers:** Hake nach jeder Rückgabe die erledigten Aufgaben ab und übernimm gemeldete manuelle Go-live-Schritte in den Abschnitt "Rollout". So kommen sich parallel laufende Engineers nicht in derselben Datei in die Quere.
+6. Führe eine Liste aller geänderten und neu angelegten Dateien aus den Rückgaben und gleiche sie mit `git status` ab. Neue Dateien sind bis zum Commit untracked und tauchen in `git diff` nicht auf. QA und Review brauchen diese Liste.
 
 ## Phase 5: QA
 
