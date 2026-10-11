@@ -6,9 +6,13 @@ Ein Schreibschutz-Hook begrenzt, wohin Product Manager, Tech Lead, QA und Abnahm
 Kommunikation: Bottom Line First. Jede Nachricht an den Nutzer, jede Rückgabe der Agents und jedes Dokument in `docs/` beginnt mit einer Kurzfassung in 1–3 Sätzen; die Details folgen darunter.
 
 ## Installation
-1. ZIP entpacken
-2. Im Terminal: `bash install.sh`
-3. Claude Code neu starten
+```bash
+git clone https://github.com/samobilhdp/claude-product-team.git
+cd claude-product-team && bash install.sh
+```
+Danach eine neue Claude-Code-Session starten. Updates: `git pull && bash install.sh`.
+
+Ohne Git: ZIP entpacken, `bash install.sh` ausführen, neue Session starten.
 
 Voraussetzung: Node.js (für den Hook). Claude Code im Repo-Root starten.
 
