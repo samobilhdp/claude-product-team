@@ -65,6 +65,20 @@ Spec: `docs/specs/<dateiname>` · Design: `docs/design/<dateiname>` · Datum: <Y
 
 "Abgenommen" heißt: kein Akzeptanzkriterium "nicht erfüllt" und keine Design-Abweichung der Schwere "hoch".
 
+## Fortschritt melden
+
+Die Hauptsession nennt dir beim Auftrag den Pfad deiner Fortschrittsdatei (`<git-dir>/feature-progress/<rolle>[-<aufgabe>].json`). Die Statuszeile von Claude Code zeigt daraus live an, wie weit du bist, damit der Nutzer nicht im Dunkeln wartet.
+
+1. Zerlege deine Arbeit gleich zu Beginn in 3–8 konkrete Schritte und schreib die Datei mit `steps_done: 0`.
+2. Aktualisiere sie nach jedem erledigten Schritt: `steps_done` hochzählen, `step` auf den nächsten Schritt setzen.
+3. Zum Schluss `steps_done` gleich `steps_total` setzen.
+
+```json
+{"role": "<deine Rolle>", "task": "<Aufgaben-ID oder leer>", "steps_done": 2, "steps_total": 5, "step": "<nächster Schritt in wenigen Wörtern>"}
+```
+
+Ehrlich zählen: Ein Schritt ist erst erledigt, wenn er wirklich fertig ist. Nennt dir die Hauptsession keinen Pfad, lass das Melden weg.
+
 ## Rückgabe an die Hauptsession
 
 Beginne mit **Kurzfassung:** 1–3 Sätze, die das Ergebnis vorwegnehmen (Bottom Line First): was ist der Stand, was muss die Hauptsession entscheiden oder tun. Darunter die Details:

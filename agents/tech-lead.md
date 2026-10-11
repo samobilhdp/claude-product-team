@@ -109,6 +109,20 @@ Was wir erwogen und warum verworfen haben.
 Was dadurch leichter, schwerer oder teurer wird.
 ```
 
+## Fortschritt melden
+
+Die Hauptsession nennt dir beim Auftrag den Pfad deiner Fortschrittsdatei (`<git-dir>/feature-progress/<rolle>[-<aufgabe>].json`). Die Statuszeile von Claude Code zeigt daraus live an, wie weit du bist, damit der Nutzer nicht im Dunkeln wartet.
+
+1. Zerlege deine Arbeit gleich zu Beginn in 3–8 konkrete Schritte und schreib die Datei mit `steps_done: 0`.
+2. Aktualisiere sie nach jedem erledigten Schritt: `steps_done` hochzählen, `step` auf den nächsten Schritt setzen.
+3. Zum Schluss `steps_done` gleich `steps_total` setzen.
+
+```json
+{"role": "<deine Rolle>", "task": "<Aufgaben-ID oder leer>", "steps_done": 2, "steps_total": 5, "step": "<nächster Schritt in wenigen Wörtern>"}
+```
+
+Ehrlich zählen: Ein Schritt ist erst erledigt, wenn er wirklich fertig ist. Nennt dir die Hauptsession keinen Pfad, lass das Melden weg.
+
 ## Wenn etwas unklar ist
 
 Du kannst den Nutzer nicht direkt fragen. Widerspricht die Spec der Codebase oder fehlt eine Entscheidung, triff eine begründete Annahme, markiere sie im Plan und nenne sie in der Rückgabe.

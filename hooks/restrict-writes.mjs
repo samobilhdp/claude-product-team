@@ -8,6 +8,9 @@
 import path from "node:path";
 
 // Pfade relativ zum Projekt-Root (Startordner der Claude-Session), als reguläre Ausdrücke.
+// Jede Rolle darf ihre eigene Fortschrittsdatei im .git-Ordner schreiben (für die Statuszeile).
+const PROGRESS = /^\.git\/feature-progress\/[\w.-]+\.json$/;
+
 const PROFILES = {
   "product-manager": [/^docs\/specs\//],
   "tech-lead": [/^docs\/plans\//, /^docs\/decisions\//],
@@ -54,7 +57,7 @@ if (rel.startsWith("..") || path.isAbsolute(rel)) {
   );
 }
 
-if (allowed.some((pattern) => pattern.test(rel))) process.exit(0);
+if (PROGRESS.test(rel) || allowed.some((pattern) => pattern.test(rel))) process.exit(0);
 
 block(
   `Rolle "${profile}" darf nicht nach ${rel} schreiben. ` +

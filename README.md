@@ -19,8 +19,8 @@ Voraussetzung: Node.js (für den Hook). Claude Code im Repo-Root starten.
 Optional: Claude Design (`/design`) für die Design-Phase und das Plugin `pr-review-toolkit` für das Code-Review. Playwright im Projekt für die Abnahme im Browser (die Abnahme fängt schreibende Requests ab, damit keine echten Daten verändert werden). Ohne diese Dinge läuft der Ablauf mit Fallbacks weiter.
 
 ## Fortschritt in der Statuszeile (optional)
-Während `/feature` läuft, schreibt die Hauptsession den Stand nach `.git/feature-progress.json` (wird nie committet). `hooks/feature-progress.mjs` macht daraus eine Zeile wie
-`fahrer-rolle ▓▓▓▓▓▓░░░░ 58 % · Phase 4/8 Umsetzung · Aufgaben 4/6 · Frontend: T5`.
+Während `/feature` läuft, schreibt die Hauptsession den Gesamtstand nach `.git/feature-progress.json`, und jeder Agent meldet seine eigenen Schritte nach `.git/feature-progress/<rolle>[-<aufgabe>].json` (nichts davon wird committet; der Schreibschutz erlaubt genau diese Dateien). `hooks/feature-progress.mjs` macht daraus live eine Zeile wie
+`fahrer-rolle ▓▓▓▓▓░░░░░ 52 % · Phase 4/8 Umsetzung · Aufgaben 2/6 · Backend T3: 3/4 Tests · Frontend T4: 1/5 Formular`.
 
 - **Noch keine eigene Statuszeile:** in `~/.claude/settings.json` eintragen:
   `"statusLine": {"type": "command", "command": "node ~/.claude/hooks/feature-progress.mjs \"$(jq -r .workspace.current_dir)\""}`
@@ -28,7 +28,7 @@ Während `/feature` läuft, schreibt die Hauptsession den Stand nach `.git/featu
 - **Schon eine Statuszeile:** am Ende deines Skripts ergänzen:
   `node "$HOME/.claude/hooks/feature-progress.mjs" "$cwd"` (`$cwd` = Arbeitsordner aus dem Statuszeilen-JSON).
 
-Die Prozent kommen aus festen Phasen-Gewichten; die Umsetzung zählt anteilig nach erledigten Plan-Aufgaben. Wie weit ein Agent innerhalb seiner Arbeit ist, wird nicht geschätzt. Am Ende jeder Nachricht steht dieselbe Zeile auch im Chat.
+Die Prozent kommen aus festen Phasen-Gewichten; die laufende Phase zählt anteilig nach den gemeldeten Schritten der Agents, die Umsetzung zusätzlich nach erledigten Plan-Aufgaben. Der Design Reviewer meldet nichts, weil er nur lesen darf. Am Ende jeder Nachricht steht dieselbe Zeile auch im Chat.
 
 ## ponytail (eingebaut)
 Die Engineers arbeiten nach den Regeln von ponytail (github.com/DietrichGebert/ponytail, MIT, © 2026 DietrichGebert): kleinste vollständige Änderung, Bestehendes vor Neuem, nie an Validierung, Fehlerbehandlung oder Sicherheit sparen. Die Regeln stehen direkt in den Engineer-Agents, das Plugin muss nicht installiert werden. Lizenz: `skills/feature/licenses/ponytail-LICENSE`.
