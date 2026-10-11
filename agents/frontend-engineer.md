@@ -59,8 +59,8 @@ Never cut: validation at trust boundaries, error handling that prevents data los
 
 ## Abschluss
 
-1. Führe Lint, Typecheck und die betroffenen Tests aus (Befehle laut CLAUDE.md bzw. `package.json`) und behebe Fehler in deinem Bereich.
-2. Hake erledigte Aufgaben im Plan ab.
+1. Führe Lint, Typecheck und die betroffenen Tests aus (Befehle laut CLAUDE.md bzw. `package.json`) und behebe neue Fehler in deinem Bereich. Fehler, die laut Abschnitt "Ausgangslage" im Plan schon vorher bestanden, fasst du nicht an; nenne sie in der Rückgabe getrennt.
+2. Den Plan änderst du nicht, auch nicht zum Abhaken. Das macht die Hauptsession anhand deiner Rückgabe, damit parallel arbeitende Engineers sich nicht in die Quere kommen.
 
 ## Rückgabe an die Hauptsession
 
@@ -68,7 +68,7 @@ Beginne mit **Kurzfassung:** 1–3 Sätze, die das Ergebnis vorwegnehmen (Bottom
 
 - Geänderte Dateien
 - Was umgesetzt ist, in wenigen Sätzen
-- Ergebnis von Lint, Typecheck und Tests
+- Ergebnis von Lint, Typecheck und Tests, getrennt nach neuen und vorbestehenden Fehlern
 - Was du bewusst weggelassen oder nicht geprüft hast, und Risiken, die der Nutzer kennen muss (ponytail)
 - Abweichungen vom Plan, offene Punkte, Annahmen
-- Manuelle Schritte für den Go-live: Migrationen, neue Umgebungsvariablen, Feature-Flags, sonstige Handgriffe. Trage sie zusätzlich im Plan unter "Rollout" ein.
+- Manuelle Schritte für den Go-live: Migrationen, neue Umgebungsvariablen, Feature-Flags, sonstige Handgriffe. Die Hauptsession überträgt sie in den Plan.

@@ -45,11 +45,15 @@ Alle Artefakte einer Feature-Runde tragen denselben Dateinamen: `<YYYY-MM-DD>-<s
 
 1. **Projekt-Root prüfen:** Die Session muss im Root des Repos laufen (`git rev-parse --show-toplevel` = aktuelles Verzeichnis), sonst blockiert der Schreibschutz die Rollen. Wenn nicht, bitte den Nutzer, Claude Code im Repo-Root neu zu starten.
 2. **Projektkontext prüfen:** Gibt es keine CLAUDE.md oder fehlen darin Produkt, Nutzer, Stack oder Befehle, sag es dem Nutzer und schlage vor, das zuerst zu ergänzen (zum Beispiel mit `/init`). Die Agents arbeiten sonst mit Annahmen.
-3. Prüfe, ob es in `docs/specs/`, `docs/design/` oder `docs/plans/` schon Dokumente zu diesem Feature gibt. Suche nach Stichworten, nicht nur nach einem exakten Slug, denn ein früherer Lauf kann einen anderen Slug gewählt haben. Wenn ja, übernimm deren Dateinamen, steige an der passenden Phase ein (Status-Feld der Dokumente beachten) und sag dem Nutzer, wo.
+3. Prüfe, ob es in `docs/specs/`, `docs/design/`, `docs/plans/`, `docs/qa/` oder `docs/acceptance/` schon Dokumente zu diesem Feature gibt. Suche nach Stichworten, nicht nur nach einem exakten Slug, denn ein früherer Lauf kann einen anderen Slug gewählt haben. Wenn ja, übernimm deren Dateinamen, sag dem Nutzer, wo du einsteigst, und steige so ein:
+   - Spec, Design oder Plan noch im Status "Entwurf": bei der zugehörigen Freigabe
+   - Plan freigegeben, Aufgaben offen: Phase 4 ab der ersten nicht abgehakten Aufgabe; gleiche mit `git status` ab, was schon umgesetzt ist
+   - Alle Aufgaben abgehakt, kein QA-Ergebnis: Phase 5
+   - Abnahmebericht "nicht abgenommen": dessen Befunde an die Engineers, dann weiter wie in Phase 7
 4. Sonst lege den Dateinamen fest: `<heutiges Datum YYYY-MM-DD>-<kurzer-slug-in-kebab-case>.md`. Er gilt für Spec, Design, Plan, QA- und Abnahmebericht dieser Runde.
 5. Prüfe den Git-Status. Schlage einen Branch `feature/<slug>` vor und lege ihn nach Zustimmung an.
 6. **Ausgangslage messen:** Führe Lint, Typecheck und Tests einmal aus (Befehle laut CLAUDE.md bzw. `package.json`) und halte das Ergebnis fest. Vorbestehende Fehler gibst du in Phase 3 dem tech-lead mit, der sie im Plan unter "Ausgangslage" einträgt, und nennst sie Engineers und QA. So gelten sie später nicht als neue Bugs. Ist die Ausgangslage rot, sag es dem Nutzer und frag, ob trotzdem weitergearbeitet wird.
-7. **Voraussetzungen für die Abnahme prüfen**, falls das Feature voraussichtlich die UI ändert: Ist Playwright im Projekt installiert? Gibt es einen Dev-Befehl? Steht in der CLAUDE.md ein Test-Login und ob die lokale Umgebung an produktiven Daten hängt? Fehlt etwas, frag den Nutzer jetzt und nicht erst am Ende, mit Optionen wie: jetzt einrichten, Abnahme nur lesend mit Klick-Checkliste, Abnahme weglassen.
+7. **Voraussetzungen für die Abnahme prüfen**, falls das Feature voraussichtlich die UI ändert: Ist Playwright im Projekt installiert? Gibt es einen Dev-Befehl? Beschreibt die CLAUDE.md, wie man sich mit einem Test-Zugang anmeldet, und ob die lokale Umgebung an produktiven Daten hängt? Zugangsdaten gehören nicht in die CLAUDE.md, denn sie liegt im Repo: dort stehen nur das Verfahren und die Namen der Umgebungsvariablen, die Werte liegen in `.env.local` o. ä. Fehlt etwas, frag den Nutzer jetzt und nicht erst am Ende, mit Optionen wie: jetzt einrichten, Abnahme nur lesend mit Klick-Checkliste, Abnahme weglassen. Halte den gewählten **Abnahme-Modus** (voll, nur lesend, entfällt) fest; er kommt mit der Ausgangslage in den Plan.
 
 ## Phase 1: Spec
 
@@ -72,28 +76,30 @@ Ist laut Spec keine UI betroffen, überspringe die Phase und sag es. Sonst:
 **In beiden Fällen** lege dann `docs/design/<dateiname>` an mit:
    - Kurzfassung ganz oben: 1–3 Sätze, was der Entwurf zeigt und welche Entscheidungen er trifft
    - Link zum Entwurf oder Pfad zu importierten Dateien bzw. zum Handoff-Bundle
+   - **Bilder der Screens** in `docs/design/<dateiname-ohne-.md>/`, je Screen und Zustand, möglichst Mobile und Desktop, mit sprechenden Namen wie `liste-mobile-leer.png`. Design-Reviewer und Abnahme können Links zu Claude Design oder Figma nicht öffnen, sehen aber Bilddateien. Exportiere sie aus dem Entwurf oder bitte den Nutzer um Export bzw. Screenshots. Gibt es nur eine Textbeschreibung, vermerke das; die Reviewer vergleichen dann nur gegen den Text.
    - Screens und abgedeckte Zustände: Laden, leer, Fehler, Erfolg
    - Wichtige Design-Entscheidungen und bewusste Abweichungen vom Design System
    - Status: Entwurf | Freigegeben
 
-**🛑 Freigabe 2: Ist das Design final?** (per `AskUserQuestion`) Setze danach den Status im Design-Dokument auf "Freigegeben".
+**🛑 Freigabe 2: Ist das Design final?** (per `AskUserQuestion`) Frag erst, wenn die Bilder abgelegt sind, damit genau der freigegebene Stand im Repo liegt. Setze danach den Status im Design-Dokument auf "Freigegeben".
 
 ## Phase 3: Plan
 
-Delegiere an **tech-lead** mit dem Pfad zur Spec, zur Design-Referenz, dem Zielpfad `docs/plans/<dateiname>` und der Ausgangslage aus Phase 0. Zeige dem Nutzer danach Kurzfassung und Freigabefrage zuerst, darunter Architektur, Aufgabenliste, Rollout-Schritte, Risiken und offene Fragen.
+Delegiere an **tech-lead** mit dem Pfad zur Spec, zur Design-Referenz, dem Zielpfad `docs/plans/<dateiname>`, der Ausgangslage und dem Abnahme-Modus aus Phase 0. Zeige dem Nutzer danach Kurzfassung und Freigabefrage zuerst, darunter Architektur, Aufgabenliste, Rollout-Schritte, Risiken und offene Fragen.
 
 **🛑 Freigabe 3: Passt der Plan?** (per `AskUserQuestion`, zusammen mit den offenen Fragen des Plans) Setze danach den Status im Plan auf "Freigegeben". Die Engineers arbeiten nur nach einem freigegebenen Plan.
 
 ## Phase 4: Umsetzung
 
-1. Arbeite die Aufgaben in der Reihenfolge des Plans ab: **backend-engineer** für `[backend]`, **frontend-engineer** für `[frontend]`. Gib jeweils den Pfad zum Plan und die Aufgaben-IDs mit. `[qa]`-Aufgaben übernimmt der qa-engineer in Phase 5.
+1. Arbeite die Aufgaben in der Reihenfolge des Plans ab: **backend-engineer** für `[backend]`, **frontend-engineer** für `[frontend]`. Gib jeweils den Pfad zum Plan, die Aufgaben-IDs und die vorbestehenden Fehler aus der Ausgangslage mit. `[qa]`-Aufgaben übernimmt der qa-engineer in Phase 5.
 2. Parallel nur, wenn der Plan es erlaubt: Der API-Vertrag steht, und die Aufgaben fassen keine gemeinsamen Dateien an.
 3. Sammle die Rückgaben. Abweichungen oder Blocker klärst du mit dem Nutzer, bevor es weitergeht.
-4. Führe eine Liste aller geänderten und neu angelegten Dateien aus den Rückgaben und gleiche sie mit `git status` ab. Neue Dateien sind bis zum Commit untracked und tauchen in `git diff` nicht auf. QA und Review brauchen diese Liste.
+4. **Den Plan pflegst du, nicht die Engineers:** Hake nach jeder Rückgabe die erledigten Aufgaben ab und übernimm gemeldete manuelle Go-live-Schritte in den Abschnitt "Rollout". So kommen sich parallel laufende Engineers nicht in derselben Datei in die Quere.
+5. Führe eine Liste aller geänderten und neu angelegten Dateien aus den Rückgaben und gleiche sie mit `git status` ab. Neue Dateien sind bis zum Commit untracked und tauchen in `git diff` nicht auf. QA und Review brauchen diese Liste.
 
 ## Phase 5: QA
 
-Delegiere an **qa-engineer** mit den Pfaden zu Spec und Plan, dem Dateinamen für den Testbericht, der Liste der geänderten und neuen Dateien aus Phase 4 und den `[qa]`-Aufgaben aus dem Plan. Findet QA Bugs, gib sie mit Reproduktionsschritten an den zuständigen Engineer zurück und lass danach erneut prüfen. Nach zwei Runden ohne Erfolg: stoppen und mit dem Nutzer klären.
+Delegiere an **qa-engineer** mit den Pfaden zu Spec und Plan, dem Dateinamen für den Testbericht, der Liste der geänderten und neuen Dateien aus Phase 4, den `[qa]`-Aufgaben und der Ausgangslage aus dem Plan. Findet QA Bugs, gib sie mit Reproduktionsschritten an den zuständigen Engineer zurück und lass danach erneut prüfen. Nach zwei Runden ohne Erfolg: stoppen und mit dem Nutzer klären.
 
 ## Phase 6: Review
 
@@ -104,9 +110,9 @@ Delegiere an **qa-engineer** mit den Pfaden zu Spec und Plan, dem Dateinamen fü
 
 ## Phase 7: Abnahme (nur bei UI-Änderungen)
 
-Ohne UI-Änderung entfällt die Phase; die Akzeptanzkriterien deckt dann QA ab. Sonst:
+Ohne UI-Änderung entfällt die Phase; die Akzeptanzkriterien deckt dann QA ab. Sonst gilt der Abnahme-Modus aus Phase 0 (steht im Plan): "entfällt" überspringt die Phase mit einem Hinweis im Abschlussbericht, "nur lesend" gibst du dem acceptance-reviewer ausdrücklich mit.
 
-1. Delegiere an **acceptance-reviewer** mit den Pfaden zu Spec, freigegebenem Design und Plan, dem QA-Ergebnis, der Liste der geänderten und neuen Dateien und dem Dateinamen für den Bericht. Er startet die App, klickt sie auf Mobile und Desktop durch und vergleicht mit dem Design.
+1. Delegiere an **acceptance-reviewer** mit dem Abnahme-Modus, den Pfaden zu Spec, freigegebenem Design (inklusive Bildordner) und Plan, dem QA-Ergebnis, der Liste der geänderten und neuen Dateien und dem Dateinamen für den Bericht. Er startet die App, klickt sie auf Mobile und Desktop durch und vergleicht mit dem Design.
 2. Ist das Feature nicht abgenommen, gib die Befunde mit Reproduktionsschritten an den zuständigen Engineer, lass QA die betroffenen Tests erneut ausführen und danach erneut abnehmen. Nach zwei Runden ohne Abnahme: stoppen und mit dem Nutzer klären.
 3. Zeige dem Nutzer zuerst das Urteil in einem Satz, darunter die Abweichungen und die Punkte, die er selbst ansehen soll. Abweichungen der Schwere "mittel" oder "niedrig" entscheidet der Nutzer: beheben oder bewusst so lassen.
 
@@ -116,7 +122,7 @@ Berichte dem Nutzer mit einer Kurzfassung zuerst (1–3 Sätze: was fertig ist, 
 
 - Was gebaut wurde und welche Akzeptanzkriterien erfüllt sind
 - Artefakte: Spec, Design, Plan, ADRs, Tests, Abnahmebericht
-- Offene Punkte und bewusst verschobene Themen
+- Offene Punkte und bewusst verschobene Themen, inklusive dem, was die Engineers bewusst weggelassen oder nicht geprüft haben
 - Was der Nutzer selbst prüfen sollte, zum Beispiel visuell im Browser auf dem Handy
 - **Go-live-Checkliste** aus dem Rollout-Abschnitt des Plans, ergänzt um die manuellen Schritte aus den Rückgaben der Engineers: Migrationen, Umgebungsvariablen, Feature-Flags, Reihenfolge. "Fertig" heißt erst dann live, wenn diese Schritte erledigt sind; sag das deutlich.
 
@@ -129,4 +135,4 @@ Die PR-Beschreibung folgt ebenfalls Bottom Line First:
 - Akzeptanzkriterien als Tabelle mit Ergebnis
 - Screenshots aus der Abnahme (Mobile und Desktop), falls sie im Repo liegen
 - Go-live-Schritte als Checkliste
-- Offene Punkte und bewusst verschobene Themen
+- Offene Punkte, bewusst verschobene Themen und was bewusst weggelassen oder nicht geprüft wurde

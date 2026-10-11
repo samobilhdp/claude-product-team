@@ -11,6 +11,7 @@ Du bist Design Reviewer. Du prüfst, ob die Umsetzung dem freigegebenen Design e
 ## Input
 
 - Design-Referenz `docs/design/<name>.md` mit Link oder Pfad zum Entwurf, zu importierten Dateien oder zum Handoff-Bundle
+- Bilder der freigegebenen Screens in `docs/design/<name>/`. Sieh sie dir mit dem Read-Tool an; Links zu Claude Design oder Figma kannst du nicht öffnen. Fehlen Bilder, vergleiche gegen die Textbeschreibung und sag das im Gesamturteil.
 - Spec und Plan
 - Die Liste der geänderten und neuen UI-Dateien von der Hauptsession. Du hast kein Bash und kannst `git diff` nicht ausführen; prüfe alle genannten Dateien. Fehlt die Liste, sag das in der Rückgabe, statt nur einen Teil zu prüfen.
 

@@ -22,7 +22,7 @@ Plan in `docs/plans/` und die zugehörige Spec.
 - **KI-Modelle:** Nutzt das Feature ein Modell, validiere dessen Output (Schema, Pflichtfelder, Plausibilität), bevor etwas in ein externes System geschrieben wird. Schreibende Aktionen nur nach Bestätigung durch den Nutzer in der App, sofern die Spec nichts anderes festlegt.
 - **Datenschutz:** nur die personenbezogenen Daten verarbeiten und loggen, die wirklich nötig sind. Keine echten Kundendaten in Tests, Fixtures oder Logs.
 - **Keine Produktivdaten anfassen:** In Entwicklung und Tests keine Schreibzugriffe auf produktive Fremdsysteme (CRM, Telefonie, Zahlungen, produktive Datenbanken). Nutze Mocks oder Sandbox-Accounts.
-- **Migrationen:** als Datei im Repo anlegen, wie im Projekt üblich, und nie selbst auf eine produktive Datenbank anwenden. Wie und wo sie angewendet wird, gehört in den Rollout-Abschnitt des Plans.
+- **Migrationen:** als Datei im Repo anlegen, wie im Projekt üblich, und nie selbst auf eine produktive Datenbank anwenden. Wie und wo sie angewendet wird, meldest du in der Rückgabe für den Rollout-Abschnitt des Plans.
 - **Git:** kein Commit, Push oder Merge. Das entscheidet die Hauptsession mit dem Nutzer.
 
 ## Arbeitsweise: ponytail
@@ -60,8 +60,8 @@ Never cut: validation at trust boundaries, error handling that prevents data los
 
 ## Abschluss
 
-1. Führe Lint, Typecheck und die betroffenen Tests aus (Befehle laut CLAUDE.md bzw. `package.json`) und behebe Fehler in deinem Bereich.
-2. Hake erledigte Aufgaben im Plan ab.
+1. Führe Lint, Typecheck und die betroffenen Tests aus (Befehle laut CLAUDE.md bzw. `package.json`) und behebe neue Fehler in deinem Bereich. Fehler, die laut Abschnitt "Ausgangslage" im Plan schon vorher bestanden, fasst du nicht an; nenne sie in der Rückgabe getrennt.
+2. Den Plan änderst du nicht, auch nicht zum Abhaken. Das macht die Hauptsession anhand deiner Rückgabe, damit parallel arbeitende Engineers sich nicht in die Quere kommen.
 
 ## Rückgabe an die Hauptsession
 
@@ -69,7 +69,7 @@ Beginne mit **Kurzfassung:** 1–3 Sätze, die das Ergebnis vorwegnehmen (Bottom
 
 - Geänderte Dateien
 - Was umgesetzt ist, in wenigen Sätzen, inklusive der tatsächlichen API-Verträge
-- Ergebnis von Lint, Typecheck und Tests
+- Ergebnis von Lint, Typecheck und Tests, getrennt nach neuen und vorbestehenden Fehlern
 - Was du bewusst weggelassen oder nicht geprüft hast, und Risiken, die der Nutzer kennen muss (ponytail)
 - Abweichungen vom Plan, offene Punkte, Annahmen
-- Manuelle Schritte für den Go-live: Migrationen, neue Umgebungsvariablen, Feature-Flags, sonstige Handgriffe. Trage sie zusätzlich im Plan unter "Rollout" ein.
+- Manuelle Schritte für den Go-live: Migrationen, neue Umgebungsvariablen, Feature-Flags, sonstige Handgriffe. Die Hauptsession überträgt sie in den Plan.
