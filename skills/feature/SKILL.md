@@ -39,6 +39,11 @@ Alle Artefakte einer Feature-Runde tragen denselben Dateinamen: `<YYYY-MM-DD>-<s
   - Bei Freigaben lautet die erste Option "Freigeben", die zweite "Änderungen nötig" (in der Sprache, in der der Nutzer schreibt).
 - **Blocker stoppen den Ablauf:** Meldet ein Subagent eine Abweichung vom Plan, kläre sie mit dem Nutzer, bevor es weitergeht.
 - **Bottom Line First:** Jede Nachricht an den Nutzer beginnt mit einer sehr kurzen, präzisen Kurzfassung (1–3 Sätze): Ergebnis, Urteil oder Entscheidung, und was der Nutzer jetzt tun oder entscheiden muss, zum Beispiel die Freigabefrage. Darunter folgen die Details, gegliedert und überfliegbar (Überschriften, Listen, Tabellen). Wer nur die Kurzfassung liest, muss richtig informiert sein; wer mehr wissen will, liest weiter. Das gilt auch für alle Dokumente in `docs/` (Abschnitt "Kurzfassung" ganz oben) und für die Rückgaben der Subagents.
+- **Fortschritt sichtbar machen:** Halte den Stand in `<git-dir>/feature-progress.json` aktuell (Pfad per `git rev-parse --absolute-git-dir`; liegt im `.git`-Ordner und wird nie committet). Die Statuszeile von Claude Code liest die Datei und zeigt unten Balken, Prozent und Phase an. Aktualisiere sie, wenn eine Phase beginnt oder endet, wenn eine Plan-Aufgabe erledigt ist, wenn du auf den Nutzer wartest und wenn es weitergeht. Format:
+  ```json
+  {"feature": "<slug>", "phase": 3, "done": [0, 1, 2], "tasks_done": 0, "tasks_total": 6, "state": "läuft", "activity": "Tech Lead schreibt Plan"}
+  ```
+  `phase` ist die aktuelle Phase (0–8), `done` enthält abgeschlossene und übersprungene Phasen, `tasks_*` zählt die Plan-Aufgaben ab Phase 3, `state` ist `läuft`, `wartet` (Freigabe oder Frage offen) oder `fertig`, `activity` beschreibt in wenigen Wörtern, was gerade passiert. Beende außerdem jede Nachricht an den Nutzer mit einer Fortschrittszeile, zum Beispiel `Fortschritt: ▓▓▓▓▓▓░░░░ 58 % · Phase 4/8 Umsetzung · Aufgaben 4/6`. Die Prozent folgen festen Gewichten (Vorbereitung 5, Spec 10, Design 10, Plan 10, Umsetzung 35 anteilig nach Aufgaben, QA 10, Review 8, Abnahme 7, Abschluss 5); wie weit ein Subagent innerhalb seiner Arbeit ist, lässt sich nicht messen, also nichts schätzen.
 - **Git:** Kein Commit, Push oder Merge ohne ausdrückliche Zustimmung. Beachte Deploy-Regeln in der CLAUDE.md (zum Beispiel Push auf `main` = Prod-Deploy).
 
 ## Phase 0: Vorbereitung
